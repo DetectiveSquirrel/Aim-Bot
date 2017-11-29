@@ -110,21 +110,22 @@ namespace Aimbot.Core
             }
             _aimTimer.Restart();
 
-            var aliveAndHostile = _entities
-                .Where(x => x.HasComponent<Monster>() && x.IsAlive && x.IsHostile && !IsIgnoredMonster(x.Path))
-                .Select(x => new Tuple<int, EntityWrapper, MonsterRarity>(Misc.EntityDistance(x), x, x.GetComponent<ObjectMagicProperties>().Rarity))
-                .OrderByDescending(x => x.Item3).ThenBy(x => x.Item1)
-                .ToList();
+            var aliveAndHostile = Settings.AimUniqueFirst
+                ? _entities
+                    .Where(x => x.HasComponent<Monster>() && x.IsAlive && x.IsHostile && !IsIgnoredMonster(x.Path))
+                    .Select(x => new Tuple<int, EntityWrapper, MonsterRarity>(Misc.EntityDistance(x), x,
+                        x.GetComponent<ObjectMagicProperties>().Rarity))
+                    .OrderByDescending(x => x.Item3).ThenBy(x => x.Item1)
+                    .ToList()
+                : _entities
+                    .Where(x => x.HasComponent<Monster>() && x.IsAlive && x.IsHostile && !IsIgnoredMonster(x.Path))
+                    .Select(x => new Tuple<int, EntityWrapper, MonsterRarity>(Misc.EntityDistance(x), x,
+                        x.GetComponent<ObjectMagicProperties>().Rarity))
+                    .OrderBy(x => x.Item1)
+                    .ToList();
 
-            Tuple<int, EntityWrapper, MonsterRarity> closestMonster = null;
-            foreach (var x in aliveAndHostile)
-            {
-                if (x.Item1 < Settings.AimRange)
-                {
-                    closestMonster = x;
-                    break;
-                }
-            }
+
+            var closestMonster = aliveAndHostile.FirstOrDefault(x => x.Item1 < Settings.AimRange);
 
             if (closestMonster != null)
             {
