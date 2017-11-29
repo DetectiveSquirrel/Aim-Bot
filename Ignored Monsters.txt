@@ -1,0 +1,2 @@
+Metadata/Monsters/Avatar/Avatar
+Metadata/Monsters/SkeletonSoldier/SkeletonSoldierRangedBossClone
