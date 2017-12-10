@@ -1,4 +1,4 @@
-﻿#region Header
+#region Header
 
 /*
  * Idea/Code from Qvin's auto pickup
@@ -18,6 +18,7 @@ using PoeHUD.Models;
 using PoeHUD.Models.Enums;
 using PoeHUD.Plugins;
 using PoeHUD.Poe.Components;
+using PoeHUD.Poe.RemoteMemoryObjects;
 using SharpDX;
 
 namespace Aimbot.Core
@@ -28,7 +29,6 @@ namespace Aimbot.Core
         private readonly Stopwatch _aimTimer = Stopwatch.StartNew();
         private readonly List<EntityWrapper> _entities = new List<EntityWrapper>();
         private bool _aiming;
-
         private Vector2 _clickWindowOffset;
         private bool _mouseWasHeldDown;
         private Vector2 _oldMousePos;
@@ -50,7 +50,9 @@ namespace Aimbot.Core
 
             try
             {
-                if (Keyboard.IsKeyDown((int) Settings.AimKey.Value))
+                if (Keyboard.IsKeyDown((int) Settings.AimKey.Value) &&
+                    !GameController.Game.IngameState.IngameUi.InventoryPanel.IsVisible &&
+                    !GameController.Game.IngameState.IngameUi.OpenLeftPanel.IsVisible)
                 {
                     if (_aiming)
                         return;
@@ -63,7 +65,8 @@ namespace Aimbot.Core
                         return;
 
                     _mouseWasHeldDown = false;
-                    Mouse.SetCursorPos(_oldMousePos);
+                    if (Settings.RMousePos)
+                        Mouse.SetCursorPos(_oldMousePos);
                 }
             }
             catch
@@ -103,14 +106,15 @@ namespace Aimbot.Core
 
         private void Aimbot()
         {
+
             if (_aimTimer.ElapsedMilliseconds < Settings.AimLoopDelay)
             {
                 _aiming = false;
                 return;
             }
             _aimTimer.Restart();
-
-            var aliveAndHostile = Settings.AimUniqueFirst
+            
+                var aliveAndHostile = Settings.AimUniqueFirst
                 ? _entities
                     .Where(x => x.HasComponent<Monster>() && x.IsAlive && x.IsHostile && !IsIgnoredMonster(x.Path))
                     .Select(x => new Tuple<int, EntityWrapper, MonsterRarity>(Misc.EntityDistance(x), x,
