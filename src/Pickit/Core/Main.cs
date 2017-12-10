@@ -1,4 +1,4 @@
-﻿#region Header
+#region Header
 
 /*
  * Idea/Code from Qvin's auto pickup
@@ -18,6 +18,7 @@ using PoeHUD.Models;
 using PoeHUD.Models.Enums;
 using PoeHUD.Plugins;
 using PoeHUD.Poe.Components;
+using PoeHUD.Poe.RemoteMemoryObjects;
 using SharpDX;
 
 namespace Aimbot.Core
@@ -28,7 +29,7 @@ namespace Aimbot.Core
         private readonly Stopwatch _aimTimer = Stopwatch.StartNew();
         private readonly List<EntityWrapper> _entities = new List<EntityWrapper>();
         private bool _aiming;
-
+        private IngameState _ingameState;
         private Vector2 _clickWindowOffset;
         private bool _mouseWasHeldDown;
         private Vector2 _oldMousePos;
@@ -63,7 +64,8 @@ namespace Aimbot.Core
                         return;
 
                     _mouseWasHeldDown = false;
-                    Mouse.SetCursorPos(_oldMousePos);
+                    if (Settings.RMousePos)
+                        Mouse.SetCursorPos(_oldMousePos);
                 }
             }
             catch
@@ -103,6 +105,17 @@ namespace Aimbot.Core
 
         private void Aimbot()
         {
+            _ingameState = GameController.Game.IngameState;
+
+            if (_ingameState.IngameUi.InventoryPanel.IsVisible
+                //||_ingameState.IngameUi.ChatBox.IsVisible 
+                || _ingameState.IngameUi.OpenLeftPanel.IsVisible 
+                || _ingameState.IngameUi.OpenRightPanel.IsVisible
+                || _ingameState.IngameUi.TreePanel.IsVisible
+                || _ingameState.IngameUi.AtlasPanel.IsVisible
+                )
+                return;
+
             if (_aimTimer.ElapsedMilliseconds < Settings.AimLoopDelay)
             {
                 _aiming = false;
