@@ -29,7 +29,6 @@ namespace Aimbot.Core
         private readonly Stopwatch _aimTimer = Stopwatch.StartNew();
         private readonly List<EntityWrapper> _entities = new List<EntityWrapper>();
         private bool _aiming;
-        private IngameState _ingameState;
         private Vector2 _clickWindowOffset;
         private bool _mouseWasHeldDown;
         private Vector2 _oldMousePos;
@@ -51,7 +50,9 @@ namespace Aimbot.Core
 
             try
             {
-                if (Keyboard.IsKeyDown((int) Settings.AimKey.Value))
+                if (Keyboard.IsKeyDown((int) Settings.AimKey.Value) &&
+                    !GameController.Game.IngameState.IngameUi.InventoryPanel.IsVisible &&
+                    !GameController.Game.IngameState.IngameUi.OpenLeftPanel.IsVisible)
                 {
                     if (_aiming)
                         return;
@@ -105,16 +106,6 @@ namespace Aimbot.Core
 
         private void Aimbot()
         {
-            _ingameState = GameController.Game.IngameState;
-
-            if (_ingameState.IngameUi.InventoryPanel.IsVisible
-                //||_ingameState.IngameUi.ChatBox.IsVisible 
-                || _ingameState.IngameUi.OpenLeftPanel.IsVisible 
-                || _ingameState.IngameUi.OpenRightPanel.IsVisible
-                || _ingameState.IngameUi.TreePanel.IsVisible
-                || _ingameState.IngameUi.AtlasPanel.IsVisible
-                )
-                return;
 
             if (_aimTimer.ElapsedMilliseconds < Settings.AimLoopDelay)
             {
@@ -122,8 +113,8 @@ namespace Aimbot.Core
                 return;
             }
             _aimTimer.Restart();
-
-            var aliveAndHostile = Settings.AimUniqueFirst
+            
+                var aliveAndHostile = Settings.AimUniqueFirst
                 ? _entities
                     .Where(x => x.HasComponent<Monster>() && x.IsAlive && x.IsHostile && !IsIgnoredMonster(x.Path))
                     .Select(x => new Tuple<int, EntityWrapper, MonsterRarity>(Misc.EntityDistance(x), x,
