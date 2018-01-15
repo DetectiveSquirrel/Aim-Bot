@@ -8,11 +8,11 @@ namespace Aimbot.Core
     {
         public Settings()
         {
-            AimKey = Keys.A;
-            AimRange = new RangeNode<int>(600, 1, 1000);
-            AimLoopDelay = new RangeNode<int>(124, 1, 200);
+            AimKey         = Keys.A;
+            AimRange       = new RangeNode<int>(600, 1, 1000);
+            AimLoopDelay   = new RangeNode<int>(124, 1, 200);
             AimUniqueFirst = true;
-            RMousePos = false;
+            RMousePos      = false;
         }
 
         [Menu("Aim Key")]
@@ -26,7 +26,7 @@ namespace Aimbot.Core
 
         [Menu("Aim Highest Rarity First")]
         public ToggleNode AimUniqueFirst { get; set; }
-        
+
         [Menu("Restore Mouse Position")]
         public ToggleNode RMousePos { get; set; }
     }

@@ -17,15 +17,15 @@ namespace AimBot.Utilities
 {
     public class Mouse
     {
-        public const int MouseeventfLeftdown = 0x02;
-        public const int MouseeventfLeftup = 0x04;
-        public const int MouseeventfMiddown = 0x0020;
-        public const int MouseeventfMidup = 0x0040;
-        public const int MouseeventfRightdown = 0x0008;
-        public const int MouseeventfRightup = 0x0010;
-        public const int MouseEventWheel = 0x800;
-        private const int MouseMovementDelay = 10;
-        private const int MouseClickDelay = 1;
+        public const  int MouseeventfLeftdown  = 0x02;
+        public const  int MouseeventfLeftup    = 0x04;
+        public const  int MouseeventfMiddown   = 0x0020;
+        public const  int MouseeventfMidup     = 0x0040;
+        public const  int MouseeventfRightdown = 0x0008;
+        public const  int MouseeventfRightup   = 0x0010;
+        public const  int MouseEventWheel      = 0x800;
+        private const int MouseMovementDelay   = 10;
+        private const int MouseClickDelay      = 1;
 
         [DllImport("user32.dll")]
         public static extern bool SetCursorPos(int x, int y);
@@ -41,10 +41,7 @@ namespace AimBot.Utilities
         /// <param name="y"></param>
         /// <param name="gameWindow"></param>
         /// <returns></returns>
-        public static bool SetCursorPos(int x, int y, RectangleF gameWindow)
-        {
-            return SetCursorPos(x + (int) gameWindow.X, y + (int) gameWindow.Y);
-        }
+        public static bool SetCursorPos(int x, int y, RectangleF gameWindow) => SetCursorPos(x + (int) gameWindow.X, y + (int) gameWindow.Y);
 
         /// <summary>
         ///     Sets the cursor position to the center of a given rectangle relative to the game window
@@ -52,11 +49,7 @@ namespace AimBot.Utilities
         /// <param name="position"></param>
         /// <param name="gameWindow"></param>
         /// <returns></returns>
-        public static bool SetCurosPosToCenterOfRec(RectangleF position, RectangleF gameWindow)
-        {
-            return SetCursorPos((int) (gameWindow.X + position.Center.X),
-                (int) (gameWindow.Y + position.Center.Y));
-        }
+        public static bool SetCurosPosToCenterOfRec(RectangleF position, RectangleF gameWindow) => SetCursorPos((int) (gameWindow.X + position.Center.X), (int) (gameWindow.Y + position.Center.Y));
 
         /// <summary>
         ///     Retrieves the cursor's position, in screen coordinates.
@@ -71,25 +64,13 @@ namespace AimBot.Utilities
             return lpPoint;
         }
 
-        public static void LeftMouseDown()
-        {
-            mouse_event(MouseeventfLeftdown, 0, 0, 0, 0);
-        }
+        public static void LeftMouseDown() { mouse_event(MouseeventfLeftdown, 0, 0, 0, 0); }
 
-        public static void LeftMouseUp()
-        {
-            mouse_event(MouseeventfLeftup, 0, 0, 0, 0);
-        }
+        public static void LeftMouseUp() { mouse_event(MouseeventfLeftup, 0, 0, 0, 0); }
 
-        public static void RightMouseDown()
-        {
-            mouse_event(MouseeventfRightdown, 0, 0, 0, 0);
-        }
+        public static void RightMouseDown() { mouse_event(MouseeventfRightdown, 0, 0, 0, 0); }
 
-        public static void RightMouseUp()
-        {
-            mouse_event(MouseeventfRightup, 0, 0, 0, 0);
-        }
+        public static void RightMouseUp() { mouse_event(MouseeventfRightup, 0, 0, 0, 0); }
 
         public static void SetCursorPosAndLeftClick(Vector2 coords, int extraDelay)
         {
@@ -118,34 +99,25 @@ namespace AimBot.Utilities
             public int X;
             public int Y;
 
-            public static implicit operator SharpDX.Point(Point point)
-            {
-                return new SharpDX.Point(point.X, point.Y);
-            }
+            public static implicit operator SharpDX.Point(Point point) => new SharpDX.Point(point.X, point.Y);
         }
 
         #region MyFix
 
-        private static void SetCursorPosition(float x, float y)
-        {
-            SetCursorPos((int) x, (int) y);
-        }
+        private static void SetCursorPosition(float x, float y) { SetCursorPos((int) x, (int) y); }
 
-        public static Vector2 GetCursorPositionVector()
-        {
-            return new Vector2(GetCursorPosition().X, GetCursorPosition().Y);
-        }
+        public static Vector2 GetCursorPositionVector() => new Vector2(GetCursorPosition().X, GetCursorPosition().Y);
 
         public static void SetCursorPosition(Vector2 end)
         {
-            var cursor = GetCursorPositionVector();
-            var stepVector2 = new Vector2();
-            var step = (float) Math.Sqrt(Vector2.Distance(cursor, end)) * 1.618f;
+            var cursor           = GetCursorPositionVector();
+            var stepVector2      = new Vector2();
+            var step             = (float) Math.Sqrt(Vector2.Distance(cursor, end)) * 1.618f;
             if (step > 275) step = 240;
-            stepVector2.X = (end.X - cursor.X) / step;
-            stepVector2.Y = (end.Y - cursor.Y) / step;
-            var fX = cursor.X;
-            var fY = cursor.Y;
+            stepVector2.X        = (end.X - cursor.X) / step;
+            stepVector2.Y        = (end.Y - cursor.Y) / step;
+            var fX               = cursor.X;
+            var fY               = cursor.Y;
             for (var j = 0; j < step; j++)
             {
                 fX += +stepVector2.X;
@@ -164,10 +136,7 @@ namespace AimBot.Utilities
             LeftMouseUp();
         }
 
-        public static void SetCursorPos(Vector2 vec)
-        {
-            SetCursorPos((int) vec.X, (int) vec.Y);
-        }
+        public static void SetCursorPos(Vector2 vec) { SetCursorPos((int) vec.X, (int) vec.Y); }
 
         #endregion
     }
