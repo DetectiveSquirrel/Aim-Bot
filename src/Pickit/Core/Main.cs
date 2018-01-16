@@ -60,9 +60,9 @@ namespace Aimbot.Core
                         Mouse.SetCursorPos(_oldMousePos);
                 }
             }
-            catch
+            catch (Exception e)
             {
-                LogError("Something went wrong?", 5);
+                LogError("Something went wrong? " + e, 5);
             }
         }
 

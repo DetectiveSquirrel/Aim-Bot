@@ -34,6 +34,7 @@ namespace AimBot.Utilities
 
         public static void KeyPress(Keys key)
         {
+
             KeyDown(key);
             Thread.Sleep(ActionDelay);
             KeyUp(key);
