@@ -13,21 +13,16 @@ namespace Aimbot.Core
             AimLoopDelay   = new RangeNode<int>(124, 1, 200);
             AimUniqueFirst = true;
             RMousePos      = false;
+            ShowWindow = false;
         }
-
-        [Menu("Aim Key")]
+        
         public HotkeyNode AimKey { get; set; }
-
-        [Menu("Aim Radius")]
         public RangeNode<int> AimRange { get; set; }
-
-        [Menu("Aim Loop Delay")]
         public RangeNode<int> AimLoopDelay { get; set; }
-
-        [Menu("Aim Highest Rarity First")]
         public ToggleNode AimUniqueFirst { get; set; }
-
-        [Menu("Restore Mouse Position")]
         public ToggleNode RMousePos { get; set; }
+
+        [Menu("Show ImGui Settings")]
+        public ToggleNode ShowWindow { get; set; }
     }
 }

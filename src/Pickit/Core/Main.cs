@@ -13,6 +13,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using AimBot.Utilities;
+using ImGuiNET;
 using PoeHUD.Framework.Helpers;
 using PoeHUD.Models;
 using PoeHUD.Models.Enums;
@@ -24,22 +25,26 @@ namespace Aimbot.Core
 {
     public class Main : BaseSettingsPlugin<Settings>
     {
-        private const    int                 PixelBorder = 3;
-        private readonly Stopwatch           _aimTimer   = Stopwatch.StartNew();
-        private readonly List<EntityWrapper> _entities   = new List<EntityWrapper>();
-        private          bool                _aiming;
-        private          Vector2             _clickWindowOffset;
-        private          bool                _mouseWasHeldDown;
-        private          Vector2             _oldMousePos;
-        public           HashSet<string>     IgnoredMonsters;
+        private const int PixelBorder = 3;
+        private readonly Stopwatch _aimTimer = Stopwatch.StartNew();
+        private readonly List<EntityWrapper> _entities = new List<EntityWrapper>();
+        private bool _aiming;
+        private Vector2 _clickWindowOffset;
+        private bool _mouseWasHeldDown;
+        private Vector2 _oldMousePos;
+        public HashSet<string> IgnoredMonsters;
 
         public Main() => PluginName = "Aim Bot";
 
-        public override void Initialise() { IgnoredMonsters = LoadFile("Ignored Monsters"); }
+        public override void Initialise()
+        {
+            IgnoredMonsters = LoadFile("Ignored Monsters");
+        }
 
         public override void Render()
         {
             base.Render();
+            ImGuiMenu();
             try
             {
                 if (Keyboard.IsKeyDown((int) Settings.AimKey.Value)
@@ -66,6 +71,22 @@ namespace Aimbot.Core
             }
         }
 
+        private void ImGuiMenu()
+        {
+            if (Settings.ShowWindow)
+            {
+                if (ImGuiExtension.BeginWindowCenter("Auto Aim Settings", 530, 146))
+                {
+                    Settings.AimRange.Value = ImGuiExtension.IntSlider("Target Distance", Settings.AimRange);
+                    Settings.AimLoopDelay.Value = ImGuiExtension.IntSlider("Target Delay ms", Settings.AimLoopDelay);
+                    Settings.AimUniqueFirst.Value = ImGuiExtension.Checkbox("Aim Highest Rarity First", Settings.AimUniqueFirst.Value);
+                    Settings.RMousePos.Value = ImGuiExtension.Checkbox("Restore Mouse Position After Letting Go Of Auto Aim Hotkey", Settings.RMousePos.Value);
+                    Settings.AimKey.Value = ImGuiExtension.HotkeySelector("Auto Aim Hotkey", "Auto Aim Popup", Settings.AimKey.Value);
+                }
+                ImGui.EndWindow();
+            }
+        }
+
         public override void EntityAdded(EntityWrapper entityWrapper) { _entities.Add(entityWrapper); }
 
         public override void EntityRemoved(EntityWrapper entityWrapper) { _entities.Remove(entityWrapper); }
@@ -80,7 +101,7 @@ namespace Aimbot.Core
             }
 
             var hashSet = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-            var lines   = File.ReadAllLines(file);
+            var lines = File.ReadAllLines(file);
             lines.Where(x => !string.IsNullOrWhiteSpace(x) && !x.StartsWith("#")).ForEach(x => hashSet.Add(x.Trim()));
             return hashSet;
         }
@@ -111,7 +132,7 @@ namespace Aimbot.Core
             {
                 if (!_mouseWasHeldDown)
                 {
-                    _oldMousePos      = Mouse.GetCursorPositionVector();
+                    _oldMousePos = Mouse.GetCursorPositionVector();
                     _mouseWasHeldDown = true;
                 }
 
@@ -121,9 +142,9 @@ namespace Aimbot.Core
                     return;
                 }
 
-                var camera            = GameController.Game.IngameState.Camera;
+                var camera = GameController.Game.IngameState.Camera;
                 var entityPosToScreen = camera.WorldToScreen(closestMonster.Item2.Pos.Translate(0, 0, 0), closestMonster.Item2);
-                var vectWindow        = GameController.Window.GetWindowRectangle();
+                var vectWindow = GameController.Window.GetWindowRectangle();
                 if (entityPosToScreen.Y + PixelBorder > vectWindow.Bottom || entityPosToScreen.Y - PixelBorder < vectWindow.Top)
                 {
                     _aiming = false;
