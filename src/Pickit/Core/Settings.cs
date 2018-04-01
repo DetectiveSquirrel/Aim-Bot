@@ -13,7 +13,6 @@ namespace Aimbot.Core
             AimLoopDelay   = new RangeNode<int>(124, 1, 200);
             AimUniqueFirst = true;
             RMousePos      = false;
-            ShowWindow = false;
         }
         
         public HotkeyNode AimKey { get; set; }
@@ -22,7 +21,6 @@ namespace Aimbot.Core
         public ToggleNode AimUniqueFirst { get; set; }
         public ToggleNode RMousePos { get; set; }
 
-        [Menu("Show ImGui Settings")]
-        public ToggleNode ShowWindow { get; set; }
+        public ToggleNode AimPlayers { get; set; } = true;
     }
 }
