@@ -125,13 +125,24 @@ namespace Aimbot.Core
             _aiming = false;
         }
 
+        private int TryGetStat(GameStat stat) => GameController.EntityListWrapper.PlayerStats.TryGetValue(stat, out var statInt) ? statInt : 0;
+
+        private int TryGetStat(GameStat stat, EntityWrapper entity)
+        {
+            return entity.GetComponent<Stats>().StatDictionary.TryGetValue(stat, out var statInt) ? statInt : 0;
+        }
+
         private void PlayerAim()
         {
             var AlivePlayers = _entities
-                                 .Where(x => x.HasComponent<PoeHUD.Poe.Components.Player>() && x.IsAlive && x.Address != Player.Entity.Address)
-                                 .Select(x => new Tuple<int, EntityWrapper>(Misc.EntityDistance(x), x))
-                                 .OrderBy(x => x.Item1)
-                                 .ToList();
+                              .Where(x => x.HasComponent<PoeHUD.Poe.Components.Player>()
+                                       && x.IsAlive
+                                       && x.Address != Player.Entity.Address
+                                       && TryGetStat(GameStat.IgnoredByEnemyTargetSelection, x) != 1
+                                       && TryGetStat(GameStat.CannotDie, x) != 1)
+                              .Select(x => new Tuple<int, EntityWrapper>(Misc.EntityDistance(x), x))
+                              .OrderBy(x => x.Item1)
+                              .ToList();
             var closestMonster = AlivePlayers.FirstOrDefault(x => x.Item1 < Settings.AimRange);
             if (closestMonster != null)
             {
