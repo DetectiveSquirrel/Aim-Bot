@@ -52,8 +52,7 @@ namespace AimBot.Utilities
         public static int IntSlider(string labelString, RangeNode<int> setting)
         {
             var refValue = setting.Value;
-            //ImGui.SliderInt(labelString, ref refValue, setting.Min, setting.Max, "%.00f");
-            ImGui.DragInt(labelString, ref refValue, 0.1f, setting.Min, setting.Max, "%.00f");
+            ImGui.SliderInt(labelString, ref refValue, setting.Min, setting.Max, "%.00f");
             return refValue;
         }
 
@@ -61,6 +60,22 @@ namespace AimBot.Utilities
         {
             var refValue = setting.Value;
             ImGui.SliderInt(labelString, ref refValue, setting.Min, setting.Max, sliderString);
+            return refValue;
+        }
+
+        public static int IntDrag(string labelString, RangeNode<int> setting)
+        {
+            var refValue = setting.Value;
+            //ImGui.SliderInt(labelString, ref refValue, setting.Min, setting.Max, "%.00f");
+            ImGui.DragInt(labelString, ref refValue, 0.1f, setting.Min, setting.Max, "%.00f");
+            return refValue;
+        }
+
+        public static int IntDrag(string labelString, string sliderString, RangeNode<int> setting)
+        {
+            var refValue = setting.Value;
+            //ImGui.SliderInt(labelString, ref refValue, setting.Min, setting.Max, "%.00f");
+            ImGui.DragInt(labelString, ref refValue, 0.1f, setting.Min, setting.Max, sliderString);
             return refValue;
         }
 

@@ -133,30 +133,29 @@ namespace Aimbot.Core
         {
             ImGui.BulletText($"v{PluginVersion}");
             ImGui.BulletText($"Last Updated: {buildDate}");
-            Settings.AimRange.Value = ImGuiExtension.IntSlider("Target Distance", Settings.AimRange);
-            Settings.AimLoopDelay.Value = ImGuiExtension.IntSlider("Target Delay ms", Settings.AimLoopDelay);
+            Settings.AimRange.Value = ImGuiExtension.IntDrag("Target Distance", "%.00f units", Settings.AimRange);
+            Settings.AimLoopDelay.Value = ImGuiExtension.IntDrag("Target Delay", "%.00f ms", Settings.AimLoopDelay);
             Settings.DebugMonsterWeight.Value = ImGuiExtension.Checkbox("Draw Weight Results On Monsters", Settings.DebugMonsterWeight.Value);
-            Settings.RMousePos.Value =
-                    ImGuiExtension.Checkbox("Restore Mouse Position After Letting Go Of Auto Aim Hotkey", Settings.RMousePos.Value);
+            Settings.RMousePos.Value =  ImGuiExtension.Checkbox("Restore Mouse Position After Letting Go Of Auto Aim Hotkey", Settings.RMousePos.Value);
             Settings.AimKey.Value = ImGuiExtension.HotkeySelector("Auto Aim Hotkey", "Auto Aim Popup", Settings.AimKey.Value);
             Settings.AimPlayers.Value = ImGuiExtension.Checkbox("Aim Players Instead?", Settings.AimPlayers.Value);
             ImGui.Separator();
             ImGui.BulletText("Weight Settings"); ToolTip("Aims monsters with higher weight first");
-            Settings.UniqueRarityWeight.Value = ImGuiExtension.IntSlider("Unique Monster", Settings.UniqueRarityWeight);
-            Settings.RareRarityWeight.Value = ImGuiExtension.IntSlider("Rare Monster", Settings.RareRarityWeight);
-            Settings.MagicRarityWeight.Value = ImGuiExtension.IntSlider("Magic Monster", Settings.MagicRarityWeight);
-            Settings.NormalRarityWeight.Value = ImGuiExtension.IntSlider("Normal Monster", Settings.NormalRarityWeight);
-            Settings.CannotDieAura.Value = ImGuiExtension.IntSlider("Cannot Die Aura", Settings.CannotDieAura); ToolTip("Monster that holds the Cannot Die Arua");
-            Settings.capture_monster_trapped.Value = ImGuiExtension.IntSlider("Monster In Net", Settings.capture_monster_trapped); ToolTip("Monster is currently in a net");
-            Settings.capture_monster_enraged.Value = ImGuiExtension.IntSlider("Monster Broken Free From Net", Settings.capture_monster_enraged); ToolTip("Monster has recently broken free from the net");
-            Settings.BeastHearts.Value = ImGuiExtension.IntSlider("Malachai Hearts", Settings.BeastHearts);
-            Settings.TukohamaShieldTotem.Value = ImGuiExtension.IntSlider("Tukohama Shield Totem", Settings.TukohamaShieldTotem); ToolTip("Usually seen in the Tukahama Boss (Act 6)");
-            Settings.StrongBoxMonster.Value = ImGuiExtension.IntSlider("Strongbox Monster (Experimental)", Settings.StrongBoxMonster);
-            Settings.SummonedSkeoton.Value = ImGuiExtension.IntSlider("Summoned Skeleton", Settings.SummonedSkeoton);
-            Settings.RaisedZombie.Value = ImGuiExtension.IntSlider("Raised Zombie", Settings.RaisedZombie);
-            Settings.LightlessGrub.Value = ImGuiExtension.IntSlider("Lightless Grub", Settings.LightlessGrub); ToolTip("Usually seen in the Abyss, they are the little insects");
-            Settings.TaniwhaTail.Value = ImGuiExtension.IntSlider("Taniwha Tail", Settings.TaniwhaTail); ToolTip("Usually seen in the Kaom Stronghold Areas");
-            Settings.DiesAfterTime.Value = ImGuiExtension.IntSlider("Dies After Time", Settings.DiesAfterTime); ToolTip("If the Monster dies soon, Usually this is a tokem that was summoned");
+            Settings.UniqueRarityWeight.Value = ImGuiExtension.IntDrag("Unique Monster", Settings.UniqueRarityWeight.Value > 0 ? "+%.00f" : "%.00f", Settings.UniqueRarityWeight);
+            Settings.RareRarityWeight.Value = ImGuiExtension.IntDrag("Rare Monster", Settings.RareRarityWeight.Value > 0 ? "+%.00f" : "%.00f", Settings.RareRarityWeight);
+            Settings.MagicRarityWeight.Value = ImGuiExtension.IntDrag("Magic Monster", Settings.MagicRarityWeight.Value > 0 ? "+%.00f" : "%.00f", Settings.MagicRarityWeight);
+            Settings.NormalRarityWeight.Value = ImGuiExtension.IntDrag("Normal Monster", Settings.NormalRarityWeight.Value > 0 ? "+%.00f" : "%.00f", Settings.NormalRarityWeight);
+            Settings.CannotDieAura.Value = ImGuiExtension.IntDrag("Cannot Die Aura", Settings.CannotDieAura.Value > 0 ? "+%.00f" : "%.00f", Settings.CannotDieAura); ToolTip("Monster that holds the Cannot Die Arua");
+            Settings.capture_monster_trapped.Value = ImGuiExtension.IntDrag("Monster In Net", Settings.capture_monster_trapped.Value > 0 ? "+%.00f" : "%.00f", Settings.capture_monster_trapped); ToolTip("Monster is currently in a net");
+            Settings.capture_monster_enraged.Value = ImGuiExtension.IntDrag("Monster Broken Free From Net", Settings.capture_monster_enraged.Value > 0 ? "+%.00f" : "%.00f", Settings.capture_monster_enraged); ToolTip("Monster has recently broken free from the net");
+            Settings.BeastHearts.Value = ImGuiExtension.IntDrag("Malachai Hearts", Settings.BeastHearts.Value > 0 ? "+%.00f" : "%.00f", Settings.BeastHearts);
+            Settings.TukohamaShieldTotem.Value = ImGuiExtension.IntDrag("Tukohama Shield Totem", Settings.TukohamaShieldTotem.Value > 0 ? "+%.00f" : "%.00f", Settings.TukohamaShieldTotem); ToolTip("Usually seen in the Tukahama Boss (Act 6)");
+            Settings.StrongBoxMonster.Value = ImGuiExtension.IntDrag("Strongbox Monster (Experimental)", Settings.StrongBoxMonster.Value > 0 ? "+%.00f" : "%.00f", Settings.StrongBoxMonster);
+            Settings.SummonedSkeoton.Value = ImGuiExtension.IntDrag("Summoned Skeleton", Settings.SummonedSkeoton.Value > 0 ? "+%.00f" : "%.00f", Settings.SummonedSkeoton);
+            Settings.RaisedZombie.Value = ImGuiExtension.IntDrag("Raised Zombie", Settings.RaisedZombie.Value > 0 ? "+%.00f" : "%.00f", Settings.RaisedZombie);
+            Settings.LightlessGrub.Value = ImGuiExtension.IntDrag("Lightless Grub", Settings.LightlessGrub.Value > 0 ? "+%.00f" : "%.00f", Settings.LightlessGrub); ToolTip("Usually seen in the Abyss, they are the little insects");
+            Settings.TaniwhaTail.Value = ImGuiExtension.IntDrag("Taniwha Tail", Settings.TaniwhaTail.Value > 0 ? "+%.00f" : "%.00f", Settings.TaniwhaTail); ToolTip("Usually seen in the Kaom Stronghold Areas");
+            Settings.DiesAfterTime.Value = ImGuiExtension.IntDrag("Dies After Time", Settings.DiesAfterTime.Value > 0 ? "+%.00f" : "%.00f", Settings.DiesAfterTime); ToolTip("If the Monster dies soon, Usually this is a tokem that was summoned");
             base.DrawSettingsMenu();
         }
 
