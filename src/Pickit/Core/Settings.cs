@@ -7,53 +7,26 @@ namespace Aimbot.Core
 {
     public class Settings : SettingsBase
     {
-        public Settings()
-        {
-            AimKey         = Keys.A;
-            AimRange       = new RangeNode<int>(600, 1, 1000);
-            AimLoopDelay   = new RangeNode<int>(124, 1, 200);
-            AimUniqueFirst = true;
-            RMousePos      = false;
-
-            NormalRarityWeight = new RangeNode<int>(5, 0, 50);
-            MagicRarityWeight = new RangeNode<int>(10, 0, 50);
-            RareRarityWeight = new RangeNode<int>(15, 0, 50);
-            UniqueRarityWeight = new RangeNode<int>(20, 0, 50);
-        }
-
-
-        public HotkeyNode AimKey { get; set; }
-        public RangeNode<int> AimRange { get; set; }
-        public RangeNode<int> AimLoopDelay { get; set; }
-        public ToggleNode AimUniqueFirst { get; set; }
-        public ToggleNode RMousePos { get; set; }
-
+        public HotkeyNode AimKey { get; set; } = Keys.A;
+        public RangeNode<int> AimRange { get; set; } = new RangeNode<int>(600, 1, 1000);
+        public RangeNode<int> AimLoopDelay { get; set; } = new RangeNode<int>(124, 1, 200);
+        public ToggleNode RMousePos { get; set; } = false;
         public ToggleNode AimPlayers { get; set; } = true;
-
         public ToggleNode DebugMonsterWeight { get; set; } = false;
-
-
-        [Menu("Rarity Weight Settings", 1001)]
-        public EmptyNode EmptyNode1 { get; set; }
-
-        [Menu("Normal", 10011, 1001)]
-        public EmptyNode EmptyNodeNormal { get; set; }
-        [Menu("Rarity Weight", 100111, 10011)]
-        public RangeNode<int> NormalRarityWeight { get; set; }
-
-        [Menu("Magic", 10012, 1001)]
-        public EmptyNode EmptyNodeMagic { get; set; }
-        [Menu("Rarity Weight", 100121, 10012)]
-        public RangeNode<int> MagicRarityWeight { get; set; }
-
-        [Menu("Rare", 10013, 1001)]
-        public EmptyNode EmptyNodeRare { get; set; }
-        [Menu("Rarity Weight", 100131, 10013)]
-        public RangeNode<int> RareRarityWeight { get; set; }
-
-        [Menu("Unique", 10014, 1001)]
-        public EmptyNode EmptyNodeUnique { get; set; }
-        [Menu("Rarity Weight", 100141, 10014)]
-        public RangeNode<int> UniqueRarityWeight { get; set; }
+        public RangeNode<int> UniqueRarityWeight { get; set; } = new RangeNode<int>(20, -200, 200);
+        public RangeNode<int> RareRarityWeight { get; set; } = new RangeNode<int>(15, -200, 200);
+        public RangeNode<int> MagicRarityWeight { get; set; } = new RangeNode<int>(10, -200, 200);
+        public RangeNode<int> NormalRarityWeight { get; set; } = new RangeNode<int>(5, -200, 200);
+        public RangeNode<int> CannotDieAura { get; set; } = new RangeNode<int>(100, -200, 200);
+        public RangeNode<int> capture_monster_trapped { get; set; } = new RangeNode<int>(200, -200, 200);
+        public RangeNode<int> capture_monster_enraged { get; set; } = new RangeNode<int>(-50, -200, 200);
+        public RangeNode<int> BeastHearts { get; set; } = new RangeNode<int>(80, -200, 200);
+        public RangeNode<int> TukohamaShieldTotem { get; set; } = new RangeNode<int>(70, -200, 200);
+        public RangeNode<int> StrongBoxMonster { get; set; } = new RangeNode<int>(25, -200, 200);
+        public RangeNode<int> SummonedSkeoton { get; set; } = new RangeNode<int>(-30, -200, 200);
+        public RangeNode<int> RaisedZombie { get; set; } = new RangeNode<int>(-30, -200, 200);
+        public RangeNode<int> LightlessGrub { get; set; } = new RangeNode<int>(-30, -200, 200);
+        public RangeNode<int> TaniwhaTail { get; set; } = new RangeNode<int>(-40, -200, 200);
+        public RangeNode<int> DiesAfterTime { get; set; } = new RangeNode<int>(-50, -200, 200);
     }
 }
