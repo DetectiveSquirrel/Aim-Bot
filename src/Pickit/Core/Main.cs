@@ -266,10 +266,10 @@ namespace Aimbot.Core
             _aiming = false;
         }
 
-        private int TryGetStat(GameStat stat) => GameController.EntityListWrapper.PlayerStats.TryGetValue(stat, out int statInt) ? statInt : 0;
+        private int TryGetStat(GameStat stat) => GameController.EntityListWrapper.PlayerStats.TryGetValue((int)stat, out int statInt) ? statInt : 0;
 
         private int TryGetStat(GameStat stat, EntityWrapper entity)
-            => entity.GetComponent<Stats>().StatDictionary.TryGetValue(stat, out int statInt) ? statInt : 0;
+            => entity.GetComponent<Stats>().StatDictionary.TryGetValue((int)stat, out int statInt) ? statInt : 0;
 
         private void PlayerAim()
         {
