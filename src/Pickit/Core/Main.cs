@@ -266,10 +266,15 @@ namespace Aimbot.Core
             _aiming = false;
         }
 
-        private int TryGetStat(GameStat stat) => GameController.EntityListWrapper.PlayerStats.TryGetValue(stat, out int statInt) ? statInt : 0;
 
-        private int TryGetStat(GameStat stat, EntityWrapper entity)
-            => entity.GetComponent<Stats>().StatDictionary.TryGetValue(stat, out int statInt) ? statInt : 0;
+        public int TryGetStat(string playerStat)
+        {
+            return !GameController.EntityListWrapper.PlayerStats.TryGetValue(GameController.Files.Stats.records[playerStat].ID, out var statValue) ? 0 : statValue;
+        }
+        public int TryGetStat(string playerStat, EntityWrapper entity)
+        {
+            return !entity.GetComponent<Stats>().StatDictionary.TryGetValue(GameController.Files.Stats.records[playerStat].ID, out var statValue) ? 0 : statValue;
+        }
 
         private void PlayerAim()
         {
@@ -277,9 +282,9 @@ namespace Aimbot.Core
                                                             .Where(x => x.HasComponent<Player>()
                                                                      && x.IsAlive
                                                                      && x.Address != AimBot.Utilities.Player.Entity.Address
-                                                                     && TryGetStat(GameStat.IgnoredByEnemyTargetSelection, x) == 0
-                                                                     && TryGetStat(GameStat.CannotDie, x) == 0
-                                                                     && TryGetStat(GameStat.CannotBeDamaged, x) == 0)
+                                                                     && TryGetStat("ignored_by_enemy_target_selection", x) == 0
+                                                                     && TryGetStat("cannot_die", x) == 0
+                                                                     && TryGetStat("cannot_be_damaged", x) == 0)
                                                             .Select(x => new Tuple<float, EntityWrapper>(Misc.EntityDistance(x), x))
                                                             .OrderBy(x => x.Item1)
                                                             .ToList();
@@ -362,9 +367,9 @@ namespace Aimbot.Core
                                                                                    && x.IsAlive
                                                                                    && x.IsHostile
                                                                                    && !IsIgnoredMonster(x.Path)
-                                                                                   && TryGetStat(GameStat.IgnoredByEnemyTargetSelection, x) == 0
-                                                                                   && TryGetStat(GameStat.CannotDie, x) == 0
-                                                                                   && TryGetStat(GameStat.CannotBeDamaged, x) == 0
+                                                                                   && TryGetStat("ignored_by_enemy_target_selection", x) == 0
+                                                                                   && TryGetStat("cannot_die", x) == 0
+                                                                                   && TryGetStat("cannot_be_damaged", x) == 0
                                                                                    && !HasAnyBuff(x, new[]
                                                                                       {
                                                                                               "capture_monster_captured",
